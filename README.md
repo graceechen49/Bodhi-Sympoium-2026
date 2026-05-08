@@ -1,1 +1,1 @@
-# Bodhi-Sympoium-2026
+# Bodhi-Symposium-2026
