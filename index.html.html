@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Annual Symposium — Bodhi Research Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C0392B;
+    --red-dark: #922B21;
+    --red-deep: #641E16;
+    --red-light: #F5B7B1;
+    --red-pale: #FDEDEC;
+    --off-white: #FAF9F7;
+    --charcoal: #1C1C1C;
+    --mid: #555;
+    --muted: #888;
+    --border: #E8E2DC;
+    --card-bg: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--charcoal);
+    color: #fff;
+    padding: 2rem 1.25rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+  }
+  .logo-area {
+    margin-bottom: 1.25rem;
+  }
+  .logo-area img {
+    height: 52px;
+    width: auto;
+    /* REPLACE: swap this src with your Bodhi logo file path once you drop it into the same folder as this HTML */
+    /* e.g. src="bodhi-logo.png" */
+  }
+  .logo-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    padding: 0 16px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+  .header-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red-light);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .header-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+  }
+  .header-meta span {
+    display: block;
+  }
+
+  /* TABS */
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--charcoal);
+    display: flex;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 3px solid var(--red);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 11px 6px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.45);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    line-height: 1.3;
+  }
+  .tab-btn span {
+    display: block;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+    opacity: 0.7;
+    text-transform: none;
+  }
+  .tab-btn.active {
+    color: #fff;
+    background: rgba(192,57,43,0.2);
+  }
+  .tab-btn:hover:not(.active) {
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* BODY */
+  .agenda-body {
+    padding: 0 0 3rem;
+  }
+
+  /* FLOOR PANEL */
+  .floor-panel { display: none; }
+  .floor-panel.active { display: block; }
+
+  /* TIME SLOT */
+  .time-slot {
+    padding: 0 1rem;
+  }
+  .time-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 0 7px;
+  }
+  .time-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--red);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .time-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* SESSION CARD */
+  .session-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .session-card.keynote    { border-left-color: var(--red); }
+  .session-card.panel      { border-left-color: #1A5276; }
+  .session-card.educational{ border-left-color: #117A65; }
+  .session-card.fireside   { border-left-color: #784212; }
+  .session-card.nowtalk    { border-left-color: #6C3483; }
+  .session-card.break      { border-left-color: #AAA; background: #F7F5F2; }
+
+  .card-header {
+    padding: 11px 13px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .card-tag {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tag-keynote    { background: #FDEDEC; color: var(--red-dark); }
+  .tag-panel      { background: #EAF2FF; color: #1A5276; }
+  .tag-educational{ background: #E8F8F5; color: #117A65; }
+  .tag-fireside   { background: #FEF9E7; color: #784212; }
+  .tag-nowtalk    { background: #F5EEF8; color: #6C3483; }
+  .tag-break      { background: #F0EDE8; color: #777; }
+
+  .card-body {
+    padding: 7px 13px 11px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .card-description {
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.6;
+    margin-bottom: 8px;
+    display: none;
+  }
+  .card-speakers {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .card-speakers strong {
+    color: var(--charcoal);
+    font-weight: 500;
+  }
+  .card-speakers .moderator-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--red);
+    display: block;
+    margin-top: 5px;
+  }
+
+  /* EXPAND BUTTON */
+  .expand-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--red);
+    cursor: pointer;
+    padding: 0;
+    font-weight: 500;
+  }
+  .expand-btn svg {
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .expand-btn.open svg {
+    transform: rotate(180deg);
+  }
+
+  /* SIMULTANEOUS BANNER */
+  .simultaneous-banner {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 1rem 8px;
+    padding: 6px 10px;
+    background: #EAF2FF;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #1A5276;
+    font-weight: 500;
+  }
+  .simultaneous-banner svg { flex-shrink: 0; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 1rem;
+    margin-bottom: 8px;
+  }
+  .two-col .session-card {
+    margin-bottom: 0;
+  }
+  .floor-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    letter-spacing: 0.3px;
+  }
+  .badge-main { background: #FDEDEC; color: var(--red-dark); }
+  .badge-vip  { background: #FEF9E7; color: #784212; }
+
+  /* BREAK CARD INLINE */
+  .break-inline {
+    background: #F2F0EC;
+    border-radius: 8px;
+    border-left: 3px solid #CCC;
+    padding: 9px 13px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--mid);
+  }
+
+  /* FOOTER */
+  .site-footer {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 1.5rem 1rem;
+    font-size: 11px;
+    border-top: 3px solid var(--red);
+  }
+  .site-footer a {
+    color: var(--red-light);
+    text-decoration: none;
+  }
+
+  /* ALL VIEW simultaneous block */
+  .all-simultaneous {
+    padding: 0 1rem;
+  }
+  .all-sim-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    padding-left: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-area">
+    <!--
+      ============================================================
+      LOGO PLACEMENT INSTRUCTIONS
+      ============================================================
+      1. Save your Bodhi logo file (PNG or SVG) in the SAME FOLDER
+         as this HTML file. Name it: bodhi-logo.png (or .svg)
+      2. Delete the <div class="logo-placeholder"> line below
+      3. Uncomment the <img> tag below it
+      ============================================================
+    -->
+    <div class="logo-placeholder">BODHI RESEARCH GROUP</div>
+    <!-- <img src="bodhi-logo.png" alt="Bodhi Research Group"> -->
+  </div>
+  <p class="header-eyebrow">Bodhi Research Group Presents</p>
+  <h1 class="header-title">2026 Annual Symposium</h1>
+  <div class="header-meta">
+    <span>May 14th, 2026</span>
+    <span>The Ismaili Centre · 49 Wynford Dr, Toronto, ON M3C 1K1</span>
+  </div>
+</header>
+
+<div class="tab-bar" role="tablist">
+  <button class="tab-btn active" onclick="switchTab('all')" role="tab" aria-selected="true">
+    All Sessions<span>Full day</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('main')" role="tab">
+    Main Floor<span>All delegates</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('vip')" role="tab">
+    VIP Boardroom<span>Allocators only</span>
+  </button>
+</div>
+
+<main class="agenda-body">
+
+  <!-- ===================== ALL TAB ===================== -->
+  <div id="tab-all" class="floor-panel active">
+
+    <div class="time-slot">
+      <div class="time-divider"><span class="time-label">8:00 – 8:30</span><div class="time-rule"></div></div>
+      <div class="break-inline">Breakfast + Brainstorm <span style="font-weight:300;font-size:11px;color:#aaa;">— All delegates</span></div>
+
+      <div class="time-divider"><span class="time-label">8:30 – 8:40</span><div class="time-rule"></div></div>
+      <div class="break-inline">Welcome</div>
+    </div>
+
+    <div class="time-slot">
+      <div class="time-divider"><span class="time-label">8:40 – 9:15 / 8:40 – 9:10</span><div class="time-rule"></div></div>
+    </div>
+    <div class="simultaneous-banner">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#1A5276" stroke-width="2"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg>
+      Simultaneous sessions — choose your floor
+    </div>
+    <div class="two-col">
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <span class="floor-badge badge-main">↓ Main Floor</span>
+          <p class="card-title">The Opportunity in Disorder: A Capital Markets Outlook</p>
+          <div class="card-description">In a world of shifting policy and volatile markets, disorder itself can be a source of opportunity. This special panel brings together outstanding practitioners to cover the macroeconomic backdrop across rates, FX, and policy; the most dangerous investment risks on the horizon; which sub-strategies within a multi-strategy framework look most promising going forward; and the most exciting opportunities in emerging markets fixed income and credit.</div>
+          <div class="card-speakers">
+            <strong>Sandra Ramirez</strong> | VP, Economic Research, OMERS<br>
+            <strong>Andrew Levin</strong> | Partner & Senior Credit Analyst, Mesarete Capital<br>
+            <strong>Ju Hui Lee</strong>, CFA, CAIA, FSA, FCIA, FRM | Head of Investment Risk, UN Joint Staff Pension Fund<br>
+            <strong>Michael Beaton</strong>, CFA | Deputy CIO, Polar Asset Management Partners<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Pierre-Philippe Ste. Marie</strong> | MD, Investment Research, Bodhi Research Group
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <span class="floor-badge badge-vip">↑ VIP Boardroom</span>
+          <p class="card-title">The Different Pathways to a Total Portfolio Approach</p>
+          <div class="card-description">Asset owners are increasingly shifting from the traditional Strategic Asset Allocation (SAA) framework to a Total Portfolio Approach (TPA) in pursuit of greater organizational agility and long-term performance. But is there a single, standard model for TPA? In this keynote address, Professor Sebastien Betermier draws on recent research to explore the various pathways to TPA and what the evidence reveals about this important evolution in portfolio management.</div>
+          <div class="card-speakers">
+            <strong>Dr. Sebastien Betermier</strong>, PhD | Associate Professor of Finance, McGill University; Executive Director, ICPM
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="time-slot">
+      <div class="time-divider"><span class="time-label">9:15 – 9:50 / 9:15 – 10:00</span><div class="time-rule"></div></div>
+    </div>
+    <div class="simultaneous-banner">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#1A5276" stroke-width="2"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg>
+      Simultaneous sessions — choose your floor
+    </div>
+    <div class="two-col">
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <span class="floor-badge badge-main">↓ Main Floor</span>
+          <p class="card-title">Beyond the Waterfall: New Currents in Private Markets</p>
+          <div class="card-description">Private markets are moving fast. This panel covers the frontlines of real estate, private credit, and secondaries, where value is being created, where new currents are emerging, and where caution is warranted.</div>
+          <div class="card-speakers">
+            <strong>Carrie Gurza</strong> | Director, Real Estate Lead, University Pension Plan<br>
+            <strong>Greg Geiling</strong> | Co-COO, Bayview Asset Management<br>
+            <strong>Francesca Adamski</strong> | MD, Client Solutions, Goldman Sachs Asset Management<br>
+            <strong>Soultana Reigle</strong> | Head of U.S. Equity & Senior PM, PGIM<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Dr. Niall Whelan</strong>, PhD | MD, Risk & Innovation, Bodhi Research Group
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <span class="floor-badge badge-vip">↑ VIP Boardroom</span>
+          <p class="card-title">Executive Decision (Director's Cut)</p>
+          <div class="card-description">In this interactive session, keynote speaker, pension legend, and corporate director Jim Keohane is joined by a distinguished group of executives to share their perspectives on governance, investments, and the most pressing challenges and opportunities facing pensions today.</div>
+          <div class="card-speakers">
+            <strong>Jim Keohane</strong>, CFA, ICD.D | Former President & CEO, Healthcare of Ontario Pension Plan<br>
+            <strong>Andy Greene</strong>, MA, CIM, CAIA | CIO, TTC Pension Plan<br>
+            <strong>Frédéric Godbout</strong>, CFA | CEO, Desjardins Group Pension Plan<br>
+            <strong>Evelyne Morin</strong>, CAIA | General Counsel, Innocap<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Brian Digney</strong>, CAIA | Research & Content Director, SBAI
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="time-slot">
+      <div class="time-divider"><span class="time-label">9:50 – 10:05</span><div class="time-rule"></div></div>
+      <div class="break-inline">Coffee &amp; Chat <span style="font-weight:300;font-size:11px;color:#aaa;">— All delegates</span></div>
+
+      <div class="time-divider"><span class="time-label">10:05 – 10:40</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote Fireside</span></div>
+        <div class="card-body">
+          <p class="card-title">At the Helm: A Keynote Fireside Chat with Jean Hynes</p>
+          <div class="card-description">One of the most influential figures in global asset management, Wellington Management's CEO Jean Hynes sits down for a rare and compelling conversation with Amy Flikerski, Managing Director and Head of External Portfolio Management at CPP Investments, one of the world's most respected institutional investors.</div>
+          <div class="card-speakers">
+            <strong>Jean Hynes</strong>, CFA | CEO and Managing Partner, Wellington Management<br>
+            <strong>Amy Flikerski</strong> | MD, Head of External Portfolio Management, CPP Investments
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">10:40 – 11:00</span><div class="time-rule"></div></div>
+      <div class="session-card nowtalk">
+        <div class="card-header"><span class="card-tag tag-nowtalk">NowTalk</span></div>
+        <div class="card-body">
+          <p class="card-title">Reading the Market at Scale: AI in Quant Equity</p>
+          <div class="card-description">Traditional quantitative strategies often compress text into sentiment scores, losing the narrative context that fundamental analysts rely on. Large language models offer a fundamentally different approach — reading company narratives much like a skilled analyst, but across thousands of names simultaneously. Trevor Mottl examines how AI and LLMs are reshaping quantitative equity trading and research, highlighting key design principles, emerging opportunities, and practical limitations in this rapidly evolving field.</div>
+          <div class="card-speakers">
+            <strong>Trevor Mottl</strong> | Portfolio Manager, AI Quant Equity, Magnetar
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">11:00 – 11:20</span><div class="time-rule"></div></div>
+      <div class="session-card nowtalk">
+        <div class="card-header"><span class="card-tag tag-nowtalk">NowTalk</span></div>
+        <div class="card-body">
+          <p class="card-title">Sizing Illiquidity at the Total Fund Level</p>
+          <div class="card-description">Private assets offer diversification, illiquidity premiums, and access to alternative sources of alpha — making them a staple of sophisticated portfolios worldwide. Yet the risks embedded in these investments are notoriously difficult to quantify. This presentation explores alternative frameworks for measuring and understanding the true cost of illiquidity.</div>
+          <div class="card-speakers">
+            <strong>Chris Schindler</strong>, CFA | Strategy Lead, Systematic Strategy, Polar Asset Management Partners
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">11:20 – 12:00</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">The Beauty of Mathematics: A Keynote with Manjul Bhargava</p>
+          <div class="card-description">Manjul Bhargava is the only Canadian ever to win the Fields Medal and one of the most captivating and wide-ranging intellects of our time. A Princeton professor whose pioneering work in number theory has reshaped the field, Manjul also serves as the inaugural President of the National Museum of Mathematics (MoMath) in New York. He is equally celebrated for his extraordinary gift for revealing the beauty, magic, and universality of mathematics to audiences well beyond academia.</div>
+          <div class="card-speakers">
+            <strong>Dr. Manjul Bhargava</strong>, PhD (Fields Medal Winner) | Professor in Mathematics, Princeton University; President, National Museum of Mathematics (MoMath)
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">12:00 – 12:50</span><div class="time-rule"></div></div>
+      <div class="break-inline">Lunch &amp; Liaison <span style="font-weight:300;font-size:11px;color:#aaa;">— All delegates</span></div>
+    </div>
+
+    <div class="time-slot">
+      <div class="time-divider"><span class="time-label">12:50 – 13:10</span><div class="time-rule"></div></div>
+    </div>
+    <div class="simultaneous-banner">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#1A5276" stroke-width="2"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg>
+      Simultaneous sessions — choose your floor
+    </div>
+    <div class="two-col">
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <span class="floor-badge badge-main">↓ Main Floor</span>
+          <p class="card-title">The Tables Turn: ILS Through the Allocator's Lens</p>
+          <div class="card-description">In a compelling role reversal, two leading ILS practitioners interview seasoned institutional investors on how and where ILS fits within a diversified portfolio. This compact session covers key high-level fundamentals and practical insights into portfolio fit and implementation.</div>
+          <div class="card-speakers">
+            <strong>Bernard Van der Stichele</strong> | Senior PM, ILS, Healthcare of Ontario Pension Plan<br>
+            <strong>Thomas Kalvik</strong> | MD, Private Equity & Integrated Strategies, CPP Investments<br>
+            <strong>Jessica Laird</strong>, CA | CEO, Nephila Capital<br>
+            <strong>Vincent Prabis</strong> | Managing Principal, Hiscox Capital Partners
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+      <div class="session-card nowtalk">
+        <div class="card-header"><span class="card-tag tag-nowtalk">NowTalk</span></div>
+        <div class="card-body">
+          <span class="floor-badge badge-vip">↑ VIP Boardroom</span>
+          <p class="card-title">Convertible Arbitrage: From First Principles to Today's Opportunities</p>
+          <div class="card-description">This compact educational presentation covers the unique complexities of convertible arbitrage investing, a strategy drawing on the foundational pillars of capital markets: equities, fixed income, and derivatives. The session considers whether the current environment may be a particularly interesting time to revisit convertible arbitrage within investor portfolios.</div>
+          <div class="card-speakers">
+            <strong>Seth Gold</strong> | Portfolio Manager, Convertible Arbitrage, Fidelity Investments
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="time-slot">
+      <div class="time-divider"><span class="time-label">13:10 – 13:30</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">Sailing Through Storms: Olympic Mindset, Business Edge</p>
+          <div class="card-description">What does it take to compete at the highest level when the conditions are anything but ideal? Olympic sailors Mariah Millen and Ali ten Hove share how resilience, teamwork, and adaptability carried them through the challenges of Covid-era training and onto the Olympic stage. This conversation draws direct parallels between elite athletic performance and the business world, revealing what it truly means to have the discipline to win.</div>
+          <div class="card-speakers">
+            <strong>Mariah Millen</strong> | Canadian Olympian<br>
+            <strong>Ali ten Hove</strong> | Canadian Olympian<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Matt Tambellini</strong> | Operational Advisor, Bodhi Research Group
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">13:30 – 14:00</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">The 7 Most Costly Words in Investing: "We Have Always Done It This Way"</p>
+          <div class="card-description">What separates genuine high performance from the illusion of safety? Drawing on his work with institutional investors and hedge fund managers globally, Lawrence Evans delivers a keynote that challenges the systems and habits that often confuse complacency with safety. His presentation examines trader psychology, decision-making, and high-performance investing, highlighting the importance of self-awareness, questioning assumptions, distinguishing luck from skill, and fostering investment teams capable of genuine innovation.</div>
+          <div class="card-speakers">
+            <strong>Lawrence Evans</strong> | Director, Salomon Partners
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">14:00 – 14:30</span><div class="time-rule"></div></div>
+      <div class="session-card fireside">
+        <div class="card-header"><span class="card-tag tag-fireside">Fireside</span></div>
+        <div class="card-body">
+          <p class="card-title">The Hitchhiker's Guide to Artificial Super Intelligence</p>
+          <div class="card-description">What happens when machines surpass human intelligence, and how close are we? Computer scientist Ken Pu and veteran institutional investor Mark Hannoush examine the forces driving an economic model increasingly shaped by Artificial Super Intelligence. From how we diagnose illness and manage money to how we travel, work, and make decisions, the transformation may touch nearly every part of life. Combining deep technical expertise with a seasoned investor's lens, the discussion offers a rare and balanced perspective on one of the most consequential technological shifts of our time.</div>
+          <div class="card-speakers">
+            <strong>Mark Hannoush</strong>, CPA, CFA | Managing Director, Ontario Teachers' Pension Plan<br>
+            <strong>Dr. Ken Pu</strong>, PhD | Associate Professor in Computer Science, Ontario Tech University
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">14:30 – 14:50</span><div class="time-rule"></div></div>
+      <div class="break-inline">Tea &amp; Talk <span style="font-weight:300;font-size:11px;color:#aaa;">— All delegates</span></div>
+
+      <div class="time-divider"><span class="time-label">14:50 – 15:20</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">Navigating the Post-Pax Americana World</p>
+          <div class="card-description">Positioned at the centre of many of the most important strategic conversations shaping institutional investing today, Jonathan Hausman delivers a keynote focused on a geopolitical framework and its ramifications for portfolio strategy. His ability to connect geopolitical developments to capital and commodity markets promises to be a riveting session, offering valuable perspective on how large institutional investors are adapting to an increasingly complex global landscape.</div>
+          <div class="card-speakers">
+            <strong>Jonathan Hausman</strong>, ICD.D | Chief Strategy Officer, Ontario Teachers' Pension Plan
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">15:20 – 15:45</span><div class="time-rule"></div></div>
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <p class="card-title">Durable by Design: The Architecture of a Resilient Portfolio</p>
+          <div class="card-description">Building a portfolio designed to deliver resilience and return across market cycles requires deliberate architecture. This panel brings together seasoned institutional investors to explore the frameworks, asset mix decisions, liquidity considerations, and portfolio construction principles that underpin truly durable portfolios. Drawing on deep experience spanning long-term asset mix design, total portfolio management, and liquid markets, the panelists offer rare practitioner insight into what it takes to build a portfolio designed to endure.</div>
+          <div class="card-speakers">
+            <strong>Danilo Simonelli</strong>, CFA, ICD.D | MD, Investments Portfolio Management, Mastercard Foundation Asset Management<br>
+            <strong>David Ross</strong>, CFA | Senior Executive MD, Global Head of Liquid Assets, OPTrust<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Deborah Ann Trott</strong>, CFA | Chief, Risk Strategy & Governance, UN Joint Staff Pension Fund
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">15:45 – 16:20</span><div class="time-rule"></div></div>
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <p class="card-title">Battle Tested: Real Lessons in Absolute Return Investing</p>
+          <div class="card-description">A distinguished group of allocators shares invaluable insights across three dimensions: portfolio construction of absolute return strategies, investment due diligence that cuts to the kernel of what truly matters in specific strategy types, and real-world experience gained through years in the field. Candid, practical, and grounded in deep practitioner perspective.</div>
+          <div class="card-speakers">
+            <strong>Derek Drummond</strong>, CAIA | Funds Alpha Manager, State of Wisconsin Investment Board<br>
+            <strong>Brandon Gill New</strong>, CFA | MD, Head of External Partnerships, AIMCo<br>
+            <strong>Vincent Zhou</strong>, CFA, FRM | Portfolio Manager, RedJay Asset Management<br>
+            <strong>Nicolas Lefèvre-Laumonier</strong>, PRM | MD, Liquid Alternative Investments, La Caisse<br>
+            <strong>Raj Kohli</strong>, CFA | Director, Credit & Multi-Asset Strategies, University Pension Plan
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">16:20 – 16:40</span><div class="time-rule"></div></div>
+      <div class="break-inline" style="background:#FAF0F0;border-left-color:var(--red);color:var(--red-dark);font-weight:500;">Conclusion</div>
+    </div>
+
+  </div><!-- end tab-all -->
+
+  <!-- ===================== MAIN FLOOR TAB ===================== -->
+  <div id="tab-main" class="floor-panel">
+    <div class="time-slot">
+      <div class="time-divider"><span class="time-label">8:00 – 8:30</span><div class="time-rule"></div></div>
+      <div class="break-inline">Breakfast + Brainstorm</div>
+      <div class="time-divider"><span class="time-label">8:30 – 8:40</span><div class="time-rule"></div></div>
+      <div class="break-inline">Welcome</div>
+
+      <div class="time-divider"><span class="time-label">8:40 – 9:15</span><div class="time-rule"></div></div>
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <p class="card-title">The Opportunity in Disorder: A Capital Markets Outlook</p>
+          <div class="card-description">In a world of shifting policy and volatile markets, disorder itself can be a source of opportunity. This special panel brings together outstanding practitioners to cover the macroeconomic backdrop across rates, FX, and policy; the most dangerous investment risks on the horizon; which sub-strategies within a multi-strategy framework look most promising going forward; and the most exciting opportunities in emerging markets fixed income and credit.</div>
+          <div class="card-speakers">
+            <strong>Sandra Ramirez</strong> | VP, Economic Research, OMERS<br>
+            <strong>Andrew Levin</strong> | Partner & Senior Credit Analyst, Mesarete Capital<br>
+            <strong>Ju Hui Lee</strong>, CFA, CAIA, FSA, FCIA, FRM | Head of Investment Risk, UN Joint Staff Pension Fund<br>
+            <strong>Michael Beaton</strong>, CFA | Deputy CIO, Polar Asset Management Partners<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Pierre-Philippe Ste. Marie</strong> | MD, Investment Research, Bodhi Research Group
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">9:15 – 9:50</span><div class="time-rule"></div></div>
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <p class="card-title">Beyond the Waterfall: New Currents in Private Markets</p>
+          <div class="card-description">Private markets are moving fast. This panel covers the frontlines of real estate, private credit, and secondaries, where value is being created, where new currents are emerging, and where caution is warranted.</div>
+          <div class="card-speakers">
+            <strong>Carrie Gurza</strong> | Director, Real Estate Lead, University Pension Plan<br>
+            <strong>Greg Geiling</strong> | Co-COO, Bayview Asset Management<br>
+            <strong>Francesca Adamski</strong> | MD, Client Solutions, Goldman Sachs Asset Management<br>
+            <strong>Soultana Reigle</strong> | Head of U.S. Equity & Senior PM, PGIM<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Dr. Niall Whelan</strong>, PhD | MD, Risk & Innovation, Bodhi Research Group
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">9:50 – 10:05</span><div class="time-rule"></div></div>
+      <div class="break-inline">Coffee &amp; Chat</div>
+
+      <div class="time-divider"><span class="time-label">10:05 – 10:40</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote Fireside</span></div>
+        <div class="card-body">
+          <p class="card-title">At the Helm: A Keynote Fireside Chat with Jean Hynes</p>
+          <div class="card-description">One of the most influential figures in global asset management, Wellington Management's CEO Jean Hynes sits down for a rare and compelling conversation with Amy Flikerski, Managing Director and Head of External Portfolio Management at CPP Investments, one of the world's most respected institutional investors. This will be a rare and compelling conversation not to be missed.</div>
+          <div class="card-speakers">
+            <strong>Jean Hynes</strong>, CFA | CEO and Managing Partner, Wellington Management<br>
+            <strong>Amy Flikerski</strong> | MD, Head of External Portfolio Management, CPP Investments
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">10:40 – 11:00</span><div class="time-rule"></div></div>
+      <div class="session-card nowtalk">
+        <div class="card-header"><span class="card-tag tag-nowtalk">NowTalk</span></div>
+        <div class="card-body">
+          <p class="card-title">Reading the Market at Scale: AI in Quant Equity</p>
+          <div class="card-description">Traditional quantitative strategies often compress text into sentiment scores, losing the narrative context that fundamental analysts rely on. Large language models offer a fundamentally different approach — reading company narratives much like a skilled analyst, but across thousands of names simultaneously. Trevor Mottl examines how AI and LLMs are reshaping quantitative equity trading and research, highlighting key design principles, emerging opportunities, and practical limitations.</div>
+          <div class="card-speakers">
+            <strong>Trevor Mottl</strong> | Portfolio Manager, AI Quant Equity, Magnetar
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">11:00 – 11:20</span><div class="time-rule"></div></div>
+      <div class="session-card nowtalk">
+        <div class="card-header"><span class="card-tag tag-nowtalk">NowTalk</span></div>
+        <div class="card-body">
+          <p class="card-title">Sizing Illiquidity at the Total Fund Level</p>
+          <div class="card-description">Private assets offer diversification, illiquidity premiums, and access to alternative sources of alpha — making them a staple of sophisticated portfolios worldwide. Yet the risks embedded in these investments are notoriously difficult to quantify. This presentation explores alternative frameworks for measuring and understanding the true cost of illiquidity.</div>
+          <div class="card-speakers">
+            <strong>Chris Schindler</strong>, CFA | Strategy Lead, Systematic Strategy, Polar Asset Management Partners
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">11:20 – 12:00</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">The Beauty of Mathematics: A Keynote with Manjul Bhargava</p>
+          <div class="card-description">Manjul Bhargava is the only Canadian ever to win the Fields Medal and one of the most captivating and wide-ranging intellects of our time. A Princeton professor whose pioneering work in number theory has reshaped the field, Manjul also serves as the inaugural President of the National Museum of Mathematics (MoMath) in New York. He is equally celebrated for his extraordinary gift for revealing the beauty, magic, and universality of mathematics to audiences well beyond academia.</div>
+          <div class="card-speakers">
+            <strong>Dr. Manjul Bhargava</strong>, PhD (Fields Medal Winner) | Professor in Mathematics, Princeton University; President, National Museum of Mathematics (MoMath)
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">12:00 – 12:50</span><div class="time-rule"></div></div>
+      <div class="break-inline">Lunch &amp; Liaison</div>
+
+      <div class="time-divider"><span class="time-label">12:50 – 13:10</span><div class="time-rule"></div></div>
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <p class="card-title">The Tables Turn: Insurance Linked Securities (ILS) Through the Allocator's Lens</p>
+          <div class="card-description">In a compelling role reversal, two leading ILS practitioners interview seasoned institutional investors on how and where ILS fits within a diversified portfolio. This compact session covers key high-level fundamentals and practical insights into portfolio fit and implementation. Educational in focus and allocator-driven, the discussion offers a clear introduction to the role ILS can play in institutional portfolios.</div>
+          <div class="card-speakers">
+            <strong>Bernard Van der Stichele</strong> | Senior PM, ILS, Healthcare of Ontario Pension Plan<br>
+            <strong>Thomas Kalvik</strong> | MD, Private Equity & Integrated Strategies, CPP Investments<br>
+            <strong>Jessica Laird</strong>, CA | CEO, Nephila Capital<br>
+            <strong>Vincent Prabis</strong> | Managing Principal, Hiscox Capital Partners
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">13:10 – 13:30</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">Sailing Through Storms: Olympic Mindset, Business Edge</p>
+          <div class="card-description">What does it take to compete at the highest level when the conditions are anything but ideal? Olympic sailors Mariah Millen and Ali ten Hove share how resilience, teamwork, and adaptability carried them through the challenges of Covid-era training and onto the Olympic stage. This conversation draws direct parallels between elite athletic performance and the business world, revealing what it truly means to have the discipline to win.</div>
+          <div class="card-speakers">
+            <strong>Mariah Millen</strong> | Canadian Olympian<br>
+            <strong>Ali ten Hove</strong> | Canadian Olympian<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Matt Tambellini</strong> | Operational Advisor, Bodhi Research Group
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">13:30 – 14:00</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">The 7 Most Costly Words in Investing: "We Have Always Done It This Way"</p>
+          <div class="card-description">What separates genuine high performance from the illusion of safety? Drawing on his work with institutional investors and hedge fund managers globally, Lawrence Evans delivers a keynote that challenges the systems and habits that often confuse complacency with safety. His presentation examines trader psychology, decision-making, and high-performance investing, highlighting the importance of self-awareness, questioning assumptions, distinguishing luck from skill, and fostering investment teams capable of genuine innovation.</div>
+          <div class="card-speakers">
+            <strong>Lawrence Evans</strong> | Director, Salomon Partners
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">14:00 – 14:30</span><div class="time-rule"></div></div>
+      <div class="session-card fireside">
+        <div class="card-header"><span class="card-tag tag-fireside">Fireside</span></div>
+        <div class="card-body">
+          <p class="card-title">The Hitchhiker's Guide to Artificial Super Intelligence</p>
+          <div class="card-description">What happens when machines surpass human intelligence, and how close are we? Computer scientist Ken Pu and veteran institutional investor Mark Hannoush examine the forces driving an economic model increasingly shaped by Artificial Super Intelligence. From how we diagnose illness and manage money to how we travel, work, and make decisions, the transformation may touch nearly every part of life.</div>
+          <div class="card-speakers">
+            <strong>Mark Hannoush</strong>, CPA, CFA | Managing Director, Ontario Teachers' Pension Plan<br>
+            <strong>Dr. Ken Pu</strong>, PhD | Associate Professor in Computer Science, Ontario Tech University
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">14:30 – 14:50</span><div class="time-rule"></div></div>
+      <div class="break-inline">Tea &amp; Talk</div>
+
+      <div class="time-divider"><span class="time-label">14:50 – 15:20</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">Navigating the Post-Pax Americana World</p>
+          <div class="card-description">Positioned at the centre of many of the most important strategic conversations shaping institutional investing today, Jonathan Hausman delivers a keynote focused on a geopolitical framework and its ramifications for portfolio strategy. His ability to connect geopolitical developments to capital and commodity markets promises to be a riveting session, offering valuable perspective on how large institutional investors are adapting to an increasingly complex global landscape.</div>
+          <div class="card-speakers">
+            <strong>Jonathan Hausman</strong>, ICD.D | Chief Strategy Officer, Ontario Teachers' Pension Plan
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">15:20 – 15:45</span><div class="time-rule"></div></div>
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <p class="card-title">Durable by Design: The Architecture of a Resilient Portfolio</p>
+          <div class="card-description">Building a portfolio designed to deliver resilience and return across market cycles requires deliberate architecture. This panel brings together seasoned institutional investors to explore the frameworks, asset mix decisions, liquidity considerations, and portfolio construction principles that underpin truly durable portfolios.</div>
+          <div class="card-speakers">
+            <strong>Danilo Simonelli</strong>, CFA, ICD.D | MD, Investments Portfolio Management, Mastercard Foundation Asset Management<br>
+            <strong>David Ross</strong>, CFA | Senior Executive MD, Global Head of Liquid Assets, OPTrust<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Deborah Ann Trott</strong>, CFA | Chief, Risk Strategy & Governance, UN Joint Staff Pension Fund
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">15:45 – 16:20</span><div class="time-rule"></div></div>
+      <div class="session-card panel">
+        <div class="card-header"><span class="card-tag tag-panel">Panel</span></div>
+        <div class="card-body">
+          <p class="card-title">Battle Tested: Real Lessons in Absolute Return Investing</p>
+          <div class="card-description">A distinguished group of allocators shares invaluable insights across three dimensions: portfolio construction of absolute return strategies, investment due diligence that cuts to the kernel of what truly matters in specific strategy types, and real-world experience gained through years in the field. Candid, practical, and grounded in deep practitioner perspective.</div>
+          <div class="card-speakers">
+            <strong>Derek Drummond</strong>, CAIA | Funds Alpha Manager, State of Wisconsin Investment Board<br>
+            <strong>Brandon Gill New</strong>, CFA | MD, Head of External Partnerships, AIMCo<br>
+            <strong>Vincent Zhou</strong>, CFA, FRM | Portfolio Manager, RedJay Asset Management<br>
+            <strong>Nicolas Lefèvre-Laumonier</strong>, PRM | MD, Liquid Alternative Investments, La Caisse<br>
+            <strong>Raj Kohli</strong>, CFA | Director, Credit & Multi-Asset Strategies, University Pension Plan
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">16:20 – 16:40</span><div class="time-rule"></div></div>
+      <div class="break-inline" style="background:#FAF0F0;border-left-color:var(--red);color:var(--red-dark);font-weight:500;">Conclusion</div>
+    </div>
+  </div><!-- end tab-main -->
+
+  <!-- ===================== VIP BOARDROOM TAB ===================== -->
+  <div id="tab-vip" class="floor-panel">
+    <div class="time-slot">
+      <div style="margin: 10px 0 12px; padding: 8px 12px; background: #FEF9E7; border-radius: 8px; font-size: 12px; color: #784212; border-left: 3px solid #784212;">
+        VIP Boardroom sessions are limited to allocators only.
+      </div>
+
+      <div class="time-divider"><span class="time-label">8:00 – 8:30</span><div class="time-rule"></div></div>
+      <div class="break-inline">Breakfast + Brainstorm</div>
+      <div class="time-divider"><span class="time-label">8:30 – 8:40</span><div class="time-rule"></div></div>
+      <div class="break-inline">Welcome</div>
+
+      <div class="time-divider"><span class="time-label">8:40 – 9:10</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">The Different Pathways to a Total Portfolio Approach</p>
+          <div class="card-description">Asset owners are increasingly shifting from the traditional Strategic Asset Allocation (SAA) framework to a Total Portfolio Approach (TPA) in pursuit of greater organizational agility and long-term performance. But is there a single, standard model for TPA? In this keynote address, Professor Sebastien Betermier draws on recent research to explore the various pathways to TPA and what the evidence reveals about this important evolution in portfolio management.</div>
+          <div class="card-speakers">
+            <strong>Dr. Sebastien Betermier</strong>, PhD | Associate Professor of Finance, McGill University; Executive Director, ICPM
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">9:15 – 10:00</span><div class="time-rule"></div></div>
+      <div class="session-card keynote">
+        <div class="card-header"><span class="card-tag tag-keynote">Keynote</span></div>
+        <div class="card-body">
+          <p class="card-title">Executive Decision (Director's Cut)</p>
+          <div class="card-description">In this interactive session, keynote speaker, pension legend, and corporate director Jim Keohane is joined by a distinguished group of executives to share their perspectives on governance, investments, and the most pressing challenges and opportunities facing pensions today.</div>
+          <div class="card-speakers">
+            <strong>Jim Keohane</strong>, CFA, ICD.D | Former President & CEO, Healthcare of Ontario Pension Plan<br>
+            <strong>Andy Greene</strong>, MA, CIM, CAIA | CIO, TTC Pension Plan<br>
+            <strong>Frédéric Godbout</strong>, CFA | CEO, Desjardins Group Pension Plan<br>
+            <strong>Evelyne Morin</strong>, CAIA | General Counsel, Innocap<br>
+            <span class="moderator-label">Moderated by</span>
+            <strong>Brian Digney</strong>, CAIA | Research & Content Director, SBAI
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">9:15 – 10:00</span><div class="time-rule"></div></div>
+      <div class="session-card educational">
+        <div class="card-header"><span class="card-tag tag-educational">Educational</span></div>
+        <div class="card-body">
+          <p class="card-title">Weathering the Portfolio: A Masterclass for Allocators on Catastrophe ILS</p>
+          <div class="card-description">In this special educational session, Nephila Capital's CEO Jessica Laird explains how catastrophe ILS can serve as a compelling source of uncorrelated alpha, unlocking meaningful returns in an asset class untethered from traditional market cycles.</div>
+          <div class="card-speakers">
+            <strong>Jessica Laird</strong>, CA | CEO, Nephila Capital
+          </div>
+          <button class="expand-btn" onclick="toggleDesc(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Session description
+          </button>
+        </div>
+      </div>
+
+      <div class="time-divider"><span class="time-label">9:50 – 10:05</span><div class="time-rule"></div></div>
+      <div class="break-inline">Coffee &amp; Chat</div>
+
+      <p style="font-size:12px;color:var(--muted);text-align:center;padding:16px 0 8px;">VIP Boardroom sessions conclude at 10:00.<br>Please rejoin the main floor for remaining sessions.</p>
+    </div>
+  </div><!-- end tab-vip -->
+
+</main>
+
+<footer class="site-footer">
+  <p style="margin-bottom:4px;color:rgba(255,255,255,0.6);">For more information</p>
+  <a href="https://bodhiresearchgroup.com">bodhiresearchgroup.com</a>
+</footer>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.floor-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function toggleDesc(btn) {
+  const card = btn.closest('.card-body');
+  const desc = card.querySelector('.card-description');
+  const isOpen = desc.style.display === 'block';
+  desc.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  btn.querySelector('span') && (btn.lastChild.textContent = isOpen ? ' Session description' : ' Hide description');
+}
+</script>
+
+</body>
+</html>
